@@ -1,20 +1,21 @@
 const inquirer = require("inquirer");
-const mysql = require("mysql2");
 const CheckResponse = require("./lib/cli_response.js")
+const db = require("./config/config.js")
 
-const db = mysql.createConnection(
-    {
-        host: 'localhost',
-        user: 'root',
-        password: 'Andrew?2003',
-        database:'employee_db'
-    },
-    console.log('Connected to the employee database')
-);
+db.connect((err) => {
+    if(err){
+        console.log(err);
+    }else{
+        console.log("connected");
+    }
+})
+
+global.db = db;
 
 class Cli {
     
     run(){
+        //Prompt questions
         return inquirer
 
         .prompt([
@@ -32,17 +33,11 @@ class Cli {
         }
         ])
         .then((response) => {
+            // save response to variable
             const userOption = response.db_options;
-            const sql = new CheckResponse(userOption).render();
-
-            db.query(sql, (err, result) => {
-                if(err){
-                    console.error(err);
-                }
-                else{
-                    console.log("Success", result);
-                }
-            })
+            
+            // Run a new check response to decide what sql query to render
+            new CheckResponse(userOption).render();
 
         });
     };
