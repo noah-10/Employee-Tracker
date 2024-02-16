@@ -13,3 +13,7 @@ INSERT INTO employee (role_id, first_name, last_name)
 VALUES  (2, "noah", "fryman"),
         (3,"Ava", "riley"),
         (1, "chris", "fryman");
+
+UPDATE employee SET manger_id = 3 WHERE employee_id = 1;
+
+UPDATE employee SET manger_id = 2 WHERE employee_id = 3;
